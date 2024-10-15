@@ -80,6 +80,9 @@ add_executable(MillingApplication
         src/millingObject/millingObject.cpp
         src/millingObject/millingObject.h
         src/QuadUtils.h
+        src/texture/texture.cpp
+        src/texture/texture.h
+        src/light/PointLight.h
 )
 
 # Link libraries

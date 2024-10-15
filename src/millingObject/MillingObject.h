@@ -9,7 +9,7 @@
 
 
 
-class millingObject {
+class MillingObject {
 
     float width;
     float depth;
@@ -20,7 +20,9 @@ class millingObject {
     void generateMesh();
 
 public:
-    explicit millingObject();
+    explicit MillingObject();
+
+    void render(int instanceCount);
 
 };
 

@@ -51,6 +51,9 @@ void Gui::showOptionWindow()
 
     ImGui::Checkbox("FPS Window", &show_fps_window);
     showCameraModeDropDown();
+    ImGui::SliderInt("Base Resolution X", &(appContext.baseResolution.x), 10, 2000);
+    ImGui::SliderInt("Base Resolution Y", &(appContext.baseResolution.y), 10, 2000);
+    ImGui::SliderFloat("Base Height Z", &(appContext.baseDimensions.y), 1, 50);
 
     ImGui::End();
 }
