@@ -13,9 +13,10 @@
 #include "../camera/CameraAnchorFree.h"
 #include "../camera/CameraGameLike.h"
 #include "../framebufferManager/FrameBufferManager.h"
-#include "../millingObject/MillingObject.h"
+#include "../MillingObjects/millingObject.h"
 #include "../texture/texture.h"
 #include "../light/PointLight.h"
+#include "../MillingObjects/pathObject.h"
 
 struct AppContext {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -23,6 +24,7 @@ struct AppContext {
     std::unique_ptr<FrameBufferManager> frameBufferManager;
 
     std::unique_ptr<MillingObject> millingObject;
+    std::unique_ptr<PathObject> pathObject;
 
     std::unique_ptr<Texture> heightMap;
 

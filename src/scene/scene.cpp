@@ -14,13 +14,17 @@ Scene::Scene(AppContext &appContext, RenderContext &renderContext) :
         "res/shaders/millingObject/millingObject.frag",
         "res/shaders/millingObject/millingObject.geom"
         );
+    basicShader = std::make_unique<ShaderProgram>(
+    "res/shaders/basic/basic.vert",
+    "res/shaders/basic/basic.frag"
+    );
 
     appContext.millingObject = std::make_unique<MillingObject>();
 
     appContext.light = std::make_unique<PointLight>();
     appContext.light->position = {0.0f , 0.0f, 0.25f};
 
-    appContext.baseDimensions = {150, 5, 150};
+    appContext.baseDimensions = {150, 50, 150};
     appContext.baseResolution = {1500, 1500};
 
     appContext.heightMapSize = glm::vec2(1000);
@@ -54,6 +58,14 @@ void Scene::render() {
     millingShader->setUniform("uHeightMap", 1);
     appContext.light->setupPointLight(*millingShader);
     appContext.millingObject->render(appContext.baseResolution.x * appContext.baseResolution.y);
+
+    if(appContext.pathObject != nullptr) {
+        basicShader->Activate();
+        basicShader->setUniform("model", glm::mat4(1.0f));
+        basicShader->setUniform("projection", appContext.camera->getProjectionMatrix());
+        basicShader->setUniform("view", appContext.camera->getViewMatrix());
+        appContext.pathObject->render();
+    }
 
     grid->draw();
     appContext.frameBufferManager->unbind();
