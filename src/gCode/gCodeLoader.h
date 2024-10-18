@@ -10,7 +10,12 @@
 
 
 class GCodeLoader {
+#if defined(__APPLE__)
+    static constexpr nfdfilteritem_t filterItem[] = {};
+#else
     static constexpr nfdfilteritem_t filterItem[];
+#endif
+
 public:
     static std::string chooseFile();
     static std::string saveFile();
