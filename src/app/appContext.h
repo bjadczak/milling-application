@@ -13,11 +13,25 @@
 #include "../camera/CameraAnchorFree.h"
 #include "../camera/CameraGameLike.h"
 #include "../framebufferManager/FrameBufferManager.h"
+#include "../millingObjects/millingPlate.h"
+#include "../light/PointLight.h"
+#include "../millingObjects/pathObject.h"
+#include "../millingObjects/mill.h"
 
 struct AppContext {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     std::unique_ptr<BaseCamera> camera;
     std::unique_ptr<FrameBufferManager> frameBufferManager;
+
+    std::unique_ptr<MillingPlate> millingObject;
+    std::unique_ptr<Mill> mill;
+    std::unique_ptr<PathObject> pathObject;
+
+    glm::vec2 heightMapSize;
+    glm::vec<2, int> baseResolution;
+    glm::vec3 baseDimensions;
+
+    std::unique_ptr<PointLight> light;
 
     CameraType cameraType;
 
@@ -66,7 +80,6 @@ struct AppContext {
     AppContext()
     {
         allocateCamera(CameraType::GAMELIKE);
-
     }
 };
 

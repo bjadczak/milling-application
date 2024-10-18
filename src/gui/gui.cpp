@@ -7,6 +7,8 @@
 #include <imgui.h>
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "../gCode/gCodeLoader.h"
+#include "../gCode/gCodeParser.h"
 
 void Gui::showFPSWindow() {
     static ImGuiWindowFlags flags =
@@ -51,6 +53,14 @@ void Gui::showOptionWindow()
 
     ImGui::Checkbox("FPS Window", &show_fps_window);
     showCameraModeDropDown();
+    ImGui::SliderInt("Base Resolution X", &(appContext.baseResolution.x), 10, 2000);
+    ImGui::SliderInt("Base Resolution Y", &(appContext.baseResolution.y), 10, 2000);
+    ImGui::SliderFloat("Base Height Z", &(appContext.baseDimensions.y), 1, 50);
+
+    if(ImGui::Button("Load gCode"))
+    {
+        loadGCode();
+    }
 
     ImGui::End();
 }
@@ -168,6 +178,41 @@ void Gui::showCameraModeDropDown() const {
     }
 }
 
+void Gui::loadGCode() const
+{
+    std::string strPath = GCodeLoader::chooseFile();
+    std::vector<glm::vec3> path = GCodeParser::parse(strPath);
+
+    if(appContext.pathObject == nullptr)
+    {
+        appContext.pathObject = std::make_unique<PathObject>(path);
+    }
+    else
+    {
+        appContext.pathObject->generateMesh(path);
+    }
+
+    std::string millType = strPath.substr(strPath.size()-3, 1);
+    switch(millType[0]) {
+        case 'k':
+            appContext.mill->setType(Spherical);
+        break;
+        case 'f':
+            appContext.mill->setType(Flat);
+        break;
+        default:
+            throw std::runtime_error("Wrong file extension");
+    }
+
+    std::string millDiameter = strPath.substr(strPath.size()-2, 2);
+    float millRadius = std::stoi(millDiameter) / 2.f;
+    appContext.mill->setRadius(millRadius);
+    appContext.mill->setHeight(millRadius*4);
+
+    appContext.mill->setPath(path);
+
+}
+
 void Gui::updateCameraPos (const ImVec2 canvas_sz) const
 {
     ImGui::SetCursorPos(ImVec2{0, 0});
@@ -215,8 +260,11 @@ void Gui::updateCameraPos (const ImVec2 canvas_sz) const
         {
             appContext.camera->processKeyboard(CameraMovement::RIGHT, 0);
         }
-
-        if (io.KeyCtrl)
+#if defined(__APPLE__)
+        if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_LeftSuper)))
+#else
+        if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_LeftCtrl)))
+#endif
         {
             appContext.camera->processKeyboard(CameraMovement::DOWN, 0);
         }
