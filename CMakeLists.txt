@@ -80,8 +80,6 @@ add_executable(MillingApplication
         src/objectsOpenGL/EBO.cpp
         src/mesh/mesh.h
         src/mesh/mesh.cpp
-        src/millingObjects/MillingObject.cpp
-        src/millingObjects/MillingObject.h
         src/QuadUtils.h
         src/texture/texture.cpp
         src/texture/texture.h
@@ -92,6 +90,11 @@ add_executable(MillingApplication
         src/gCode/gCodeLoader.h
         src/millingObjects/pathObject.cpp
         src/millingObjects/pathObject.h
+        src/millingObjects/mill.cpp
+        src/millingObjects/mill.h
+        src/alghorithm/Bresenham.cpp
+        src/millingObjects/millingPlate.h
+        src/millingObjects/millingPlate.h
 )
 
 # Link libraries

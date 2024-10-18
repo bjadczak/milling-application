@@ -13,20 +13,19 @@
 #include "../camera/CameraAnchorFree.h"
 #include "../camera/CameraGameLike.h"
 #include "../framebufferManager/FrameBufferManager.h"
-#include "../MillingObjects/millingObject.h"
-#include "../texture/texture.h"
+#include "../millingObjects/millingPlate.h"
 #include "../light/PointLight.h"
-#include "../MillingObjects/pathObject.h"
+#include "../millingObjects/pathObject.h"
+#include "../millingObjects/mill.h"
 
 struct AppContext {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     std::unique_ptr<BaseCamera> camera;
     std::unique_ptr<FrameBufferManager> frameBufferManager;
 
-    std::unique_ptr<MillingObject> millingObject;
+    std::unique_ptr<MillingPlate> millingObject;
+    std::unique_ptr<Mill> mill;
     std::unique_ptr<PathObject> pathObject;
-
-    std::unique_ptr<Texture> heightMap;
 
     glm::vec2 heightMapSize;
     glm::vec<2, int> baseResolution;

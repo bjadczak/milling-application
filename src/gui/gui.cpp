@@ -59,16 +59,7 @@ void Gui::showOptionWindow()
 
     if(ImGui::Button("Load gCode"))
     {
-        std::string strPath = GCodeLoader::chooseFile();
-        std::vector<glm::vec3> path = GCodeParser::parse(strPath);
-        if(appContext.pathObject == nullptr)
-        {
-            appContext.pathObject = std::make_unique<PathObject>(path);
-        }
-        else
-        {
-            appContext.pathObject->generateMesh(path);
-        }
+        loadGCode();
     }
 
     ImGui::End();
@@ -185,6 +176,41 @@ void Gui::showCameraModeDropDown() const {
         }
         ImGui::EndCombo();
     }
+}
+
+void Gui::loadGCode() const
+{
+    std::string strPath = GCodeLoader::chooseFile();
+    std::vector<glm::vec3> path = GCodeParser::parse(strPath);
+
+    if(appContext.pathObject == nullptr)
+    {
+        appContext.pathObject = std::make_unique<PathObject>(path);
+    }
+    else
+    {
+        appContext.pathObject->generateMesh(path);
+    }
+
+    std::string millType = strPath.substr(strPath.size()-3, 1);
+    switch(millType[0]) {
+        case 'k':
+            appContext.mill->setType(Spherical);
+        break;
+        case 'f':
+            appContext.mill->setType(Flat);
+        break;
+        default:
+            throw std::runtime_error("Wrong file extension");
+    }
+
+    std::string millDiameter = strPath.substr(strPath.size()-2, 2);
+    float millRadius = std::stoi(millDiameter) / 2.f;
+    appContext.mill->setRadius(millRadius);
+    appContext.mill->setHeight(millRadius*4);
+
+    appContext.mill->setPath(path);
+
 }
 
 void Gui::updateCameraPos (const ImVec2 canvas_sz) const

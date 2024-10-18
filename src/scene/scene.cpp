@@ -3,6 +3,7 @@
 //
 
 #include "scene.h"
+#include "../millingObjects/mill.h"
 
 Scene::Scene(AppContext &appContext, RenderContext &renderContext) :
     appContext(appContext),
@@ -19,25 +20,19 @@ Scene::Scene(AppContext &appContext, RenderContext &renderContext) :
     "res/shaders/basic/basic.frag"
     );
 
-    appContext.millingObject = std::make_unique<MillingObject>();
-
     appContext.light = std::make_unique<PointLight>();
     appContext.light->position = {0.0f , 0.0f, 0.25f};
 
     appContext.baseDimensions = {150, 50, 150};
     appContext.baseResolution = {1500, 1500};
-
     appContext.heightMapSize = glm::vec2(1000);
-    std::vector<float> t(appContext.heightMapSize.x*appContext.heightMapSize.y);
-    for(int i = 0; i < appContext.heightMapSize.x; i++)
-        for(int j = 0; j < appContext.heightMapSize.y; j++)
-            t[i*appContext.heightMapSize.y + j] = (40 + 10*sin(0.025*i) + 10*cos(0.01 * j))/50;
-    appContext.heightMap = std::make_unique<Texture>(appContext.heightMapSize.x, appContext.heightMapSize.y, 1, GL_RED, GL_RED, GL_FLOAT, GL_TEXTURE_2D,
-                                                     nullptr);
-    appContext.heightMap->update2D(t.data());
+
+    appContext.millingObject = std::make_unique<MillingPlate>(appContext.heightMapSize, appContext.baseDimensions.y);
+    appContext.mill = std::make_unique<Mill>(40, 8, glm::vec3(0, 60, 0), 300, 0.999, 10);
 }
 
 void Scene::update() {
+
 }
 
 void Scene::render() {
@@ -54,7 +49,7 @@ void Scene::render() {
     millingShader->setUniform("uGridSize", appContext.baseResolution);
     millingShader->setUniform("uBaseSize", glm::vec2(appContext.baseDimensions.x,appContext.baseDimensions.z));
     millingShader->setUniform("uHeightScale", appContext.baseDimensions.y);
-    appContext.heightMap->bind(1);
+    appContext.millingObject->heightMap->bind(1);
     millingShader->setUniform("uHeightMap", 1);
     appContext.light->setupPointLight(*millingShader);
     appContext.millingObject->render(appContext.baseResolution.x * appContext.baseResolution.y);
