@@ -6,7 +6,7 @@
 
 #include "../QuadUtils.h"
 
-void MillingObject::generateMap(glm::vec<2, int> size, float defaultValue) {
+void MillingPlate::generateMap(glm::vec<2, int> size, float defaultValue) {
     maxValue = defaultValue;
     heightMapData.clear();
     heightMapSize = size;
@@ -26,7 +26,7 @@ void MillingObject::generateMap(glm::vec<2, int> size, float defaultValue) {
 
 }
 
-MillingObject::MillingObject(glm::vec<2, int> size, float defaultValue) {
+MillingPlate::MillingPlate(glm::vec<2, int> size, float defaultValue) {
 
     generateMap(size, defaultValue);
     std::vector<Vertex> vertices;
@@ -36,11 +36,11 @@ MillingObject::MillingObject(glm::vec<2, int> size, float defaultValue) {
 
 }
 
-void MillingObject::render(int instanceCount) {
+void MillingPlate::render(int instanceCount) {
     objectMesh->Draw(instanceCount);
 }
 
-void MillingObject::update() {
+void MillingPlate::update() {
     std::vector<float> t(heightMapSize.x*heightMapSize.y);
     for(int i = 0; i < heightMapSize.x; i++)
         for(int j = 0; j < heightMapSize.y; j++)

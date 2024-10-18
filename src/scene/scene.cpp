@@ -3,7 +3,9 @@
 //
 
 #include "scene.h"
-#include "../millingObjects/mill.h"
+#include <memory>
+#include "../MillingObjects/mill.h"
+#include "../MillingObjects/millingPlate.h"
 
 Scene::Scene(AppContext &appContext, RenderContext &renderContext) :
     appContext(appContext),

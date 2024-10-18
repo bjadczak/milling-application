@@ -3,6 +3,8 @@
 //
 
 #include "pathObject.h"
+#include <algorithm>
+#include <iterator>
 
 void PathObject::generateMesh(const std::vector<glm::vec3> &path)
 {

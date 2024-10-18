@@ -94,7 +94,7 @@ add_executable(MillingApplication
         src/millingObjects/mill.h
         src/alghorithm/Bresenham.cpp
         src/millingObjects/millingPlate.h
-        src/millingObjects/millingPlate.h
+        src/millingObjects/millingPlate.cpp
 )
 
 # Link libraries

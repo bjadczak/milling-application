@@ -5,6 +5,7 @@
 #ifndef MILLINGOBJECT_H
 #define MILLINGOBJECT_H
 
+#include <memory>
 #include "../mesh/mesh.h"
 #include "../texture/texture.h"
 

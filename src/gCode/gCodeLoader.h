@@ -10,7 +10,7 @@
 
 
 class GCodeLoader {
-    static constexpr nfdfilteritem_t filterItem[] = {/*{ "JSON", "json" }*/};
+    static constexpr nfdfilteritem_t filterItem[];
 public:
     static std::string chooseFile();
     static std::string saveFile();
